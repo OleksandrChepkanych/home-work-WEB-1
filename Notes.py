@@ -7,8 +7,15 @@ from prompt_toolkit.key_binding import KeyBindings
 
 COMMAND_WORDS = ["add", "delete", "edit", "exit", "help", "save", "showall", "sorted_date", "sorted_tag"]
 
+class MyAbstractClass:
+    
+    def showall(self):
+        raise NotImplementedError
 
-class NoteBook:
+    def find(self):
+        raise NotImplementedError
+
+class NoteBook(MyAbstractClass):
     def __init__(self):
         self.datetimestr = str(datetime.now().strftime("%d%m%Y%H%M%S"))
         self.book = {}

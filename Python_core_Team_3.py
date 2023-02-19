@@ -11,6 +11,14 @@ finish_words = ["goodbye", "close", "exit"]
 COMMAND_WORDS = ["add", "change", "phone", "show_all", "help", "delete", "address", "email", "birthday", "days_to_birthday", "get_birthdays", "save", "get_book", "find"]
 Autocomplete_words = ["goodbye", "close", "exit", "add", "change", "phone", "show_all", "help", "delete", "address", "email", "birthday", "days_to_birthday", "get_birthdays", "save", "get_book", "find"]
 
+class MyAbstractClass:
+    
+    def get_contacts(self):
+        raise NotImplementedError
+
+    def get_contacts_pages(self):
+        raise NotImplementedError
+
 class PhoneNotInt(Exception):
     pass
 
@@ -21,7 +29,7 @@ class EmailNotEmail(Exception):
     pass
 
 
-class AddressBook(UserDict):
+class AddressBook(UserDict, MyAbstractClass):
 
     user_id = 0
             
