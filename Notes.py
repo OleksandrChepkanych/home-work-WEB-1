@@ -5,6 +5,10 @@ from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.key_binding import KeyBindings
 
+from logger import get_logger
+
+logger = get_logger(__name__)
+
 COMMAND_WORDS = ["add", "delete", "edit", "exit", "help", "save", "showall", "sorted_date", "sorted_tag"]
 
 class MyAbstractClass:
@@ -130,14 +134,20 @@ def _(event):
 def main():
     text = NoteBook()
     text.file_open()
-
+    logger.info('Start menu Notes')
     while True:
-        command_line = prompt(
+        
+        try:
+            command_line = prompt(
             "Enter your command: ",
             completer=command_completer,
             complete_while_typing=False,
             key_bindings=kb,
-        ).split()
+            ).split()
+        except Exception as err:
+            logger.error(f'[ERROR] {err}')
+
+
         command = command_line[0]
         if len(command_line) == 1:
 
@@ -194,4 +204,5 @@ def main():
 
 
 if __name__ == '__main__':
+    logger.info('Start Main Notes')
     main()

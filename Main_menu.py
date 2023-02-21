@@ -7,8 +7,13 @@ from consolemenu.items import *
 from termcolor import colored
 
 
-def main_menu():
+from logger import get_logger
 
+
+logger = get_logger(__name__)
+
+def main_menu():
+      logger.info('Start Main menu')
 
       a_b = "Address Book - the application that allows you to create and edit contacts.\nSee the application's Help for " \
             "details."
@@ -49,5 +54,7 @@ def main_menu():
       # Finally, we call show to show the menu and allow the user to interact
       menu.show()
 
+
 if __name__ == '__main__':
+      logger.info('Start main')
       main_menu()

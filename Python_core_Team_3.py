@@ -6,10 +6,13 @@ from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.key_binding import KeyBindings
 import time
+from logger import get_logger
 
 finish_words = ["goodbye", "close", "exit"]
 COMMAND_WORDS = ["add", "change", "phone", "show_all", "help", "delete", "address", "email", "birthday", "days_to_birthday", "get_birthdays", "save", "get_book", "find"]
 Autocomplete_words = ["goodbye", "close", "exit", "add", "change", "phone", "show_all", "help", "delete", "address", "email", "birthday", "days_to_birthday", "get_birthdays", "save", "get_book", "find"]
+
+logger = get_logger(__name__)
 
 class MyAbstractClass:
     
@@ -397,13 +400,17 @@ def main():
 
 
                
-
-        user_command = prompt(
+        try:
+            user_command = prompt(
             "Enter your command and data or enter 'help' to get the manual of bot  ",
             completer=command_completer,
             complete_while_typing=False,
             key_bindings=kb,
         ) 
+        except Exception as err:
+            logger.error(f'[ERROR] {err}')
+
+
         user_command_small_letters = user_command.lower()
 
         if user_command_small_letters == "hello":
@@ -540,4 +547,5 @@ def main():
 
 
 if __name__ == '__main__':
+    logger.info('Start main Adresbook')
     main()
