@@ -1,9 +1,12 @@
+import socket
 import pathlib
 import urllib.parse
 import mimetypes
+import logging
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 base_dir = pathlib.Path()
+buffer_size = 1024
 
 
 class App(BaseHTTPRequestHandler):
@@ -50,10 +53,25 @@ class App(BaseHTTPRequestHandler):
         self.end_headers()
         self.send_html("message.html")
 
-    def save_data(self, data):
-        parse_data = urllib.parse.unquote_plus(data.decode())
-        dict_parse = [el for el in parse_data.split("&")]
-        print(dict_parse)
+
+def save_data(data):
+    parse_data = urllib.parse.unquote_plus(data.decode())
+    dict_parse = [el for el in parse_data.split("&")]
+    print(dict_parse)
+
+
+def run_socket_servet(host, port):
+    server_soket = socket.socket()
+    server_soket.bind((host, port))
+    server_soket.listen()
+
+    try:
+        while True:
+            msg, adress = server_soket.recvfrom(buffer_size)
+            save_data(msg)
+    except KeyboardInterrupt:
+
+    server_soket.close()
 
 
 def run():
@@ -66,4 +84,5 @@ def run():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG, format="%(threadName)s %(message)s")
     run()
