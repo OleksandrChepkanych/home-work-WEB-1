@@ -3,17 +3,28 @@ import pathlib
 import urllib.parse
 import mimetypes
 import logging
+import json
+from datetime import datetime
+from threading import Thread
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 base_dir = pathlib.Path()
 buffer_size = 1024
+port_http = 3000
+port_soket = 5000
+host_socket = "127.0.0.1"
+
+
+def send_data_to_socket(data):
+    client_socet = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    client_socet.sendto(data, (host_socket, port_soket))
+    client_socet.close()
 
 
 class App(BaseHTTPRequestHandler):
     def do_GET(self):
-        print(urllib.parse.urlparse(self.path))
         route = urllib.parse.urlparse(self.path)
-
+        print(route.query)
         match route.path:
             case "/":
                 self.send_html("index.html")
@@ -47,7 +58,7 @@ class App(BaseHTTPRequestHandler):
     def do_POST(self):
         lenght = self.headers.get("Content-Length")
         data = self.rfile.read(int(lenght))
-        self.save_data(data)
+        send_data_to_socket(data)
         self.send_response(302)
         self.send_header("Location", "message.html")
         self.end_headers()
@@ -56,33 +67,51 @@ class App(BaseHTTPRequestHandler):
 
 def save_data(data):
     parse_data = urllib.parse.unquote_plus(data.decode())
-    dict_parse = [el for el in parse_data.split("&")]
-    print(dict_parse)
+    try:
+        with open("storage/data.json", "r", encoding="utf-8") as file_data:
+            dict_parse = json.load(file_data)
+        date_n = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S")
+        dict_parse[date_n] = {
+            key: value for key, value in [el.split("=") for el in parse_data.split("&")]
+        }
+
+        with open("storage/data.json", "w", encoding="utf-8") as file_data:
+            json.dump(dict_parse, file_data, ensure_ascii=False, indent=4)
+    except ValueError as error:
+        logging.debug(f"for data {parse_data}, error: {error}")
+    except OSError as error:
+        logging.debug(f"Write data {parse_data}, error: {error}")
 
 
 def run_socket_servet(host, port):
-    server_soket = socket.socket()
+    server_soket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_soket.bind((host, port))
-    server_soket.listen()
 
     try:
         while True:
             msg, adress = server_soket.recvfrom(buffer_size)
             save_data(msg)
     except KeyboardInterrupt:
+        logging.info("Socket server stoped")
+    finally:
+        server_soket.server_close()
 
-    server_soket.close()
 
-
-def run():
-    address = ("localhost", 3000)
+def run_http_server():
+    address = ("localhost", port_http)
     httpd = HTTPServer(address, App)
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
+        logging.info("Socket server stoped")
+    finally:
         httpd.server_close()
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, format="%(threadName)s %(message)s")
-    run()
+    th_server = Thread(target=run_http_server)
+    th_server.start()
+
+    th_socket = Thread(target=run_socket_servet, args=(host_socket, port_soket))
+    th_socket.start()
