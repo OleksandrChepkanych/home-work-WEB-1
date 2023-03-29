@@ -1,0 +1,29 @@
+CREATE TABLE IF NOT EXISTS [groups](
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name STRING UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS [teacher](
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  full_name STRING
+);
+
+CREATE TABLE IF NOT EXISTS [students](
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  full_name STRING,
+  groups_id REFERENCES [groups] (id)
+);
+
+CREATE TABLE IF NOT EXISTS [discipline](
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name STRING UNIQUE,
+  teacher_id REFERENCES [teacher] (id)
+);
+
+CREATE TABLE IF NOT EXISTS [grades](
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  students_id REFERENCES [students] (id),
+  discipline_id REFERENCES [discipline] (id),
+  grade INTEGER,
+  date_of DATE
+);
