@@ -1,0 +1,18 @@
+{% extends "app_portal/base.html" %}
+
+{% block content %}
+
+    <div class="px-4 py-5 my-5">
+    <h5 class="display-8 fw-bold text-body-emphasis">{{ author.full_name }}</h5>
+    <div class="col-lg-6">
+        <p class="lead mb-4">Born date: {{ author.born_date }}</p>
+    </div>
+    <div class="col-lg-6">
+        <p class="lead mb-4">Born in: {{ author.born_location }}</p>
+    </div>
+    <div class="col-lg-6">
+        <p class="lead mb-4">Biography: {{ author.bio }}</p>
+    </div>
+</div>
+
+{% endblock %}
