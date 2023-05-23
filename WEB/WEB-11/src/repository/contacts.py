@@ -74,7 +74,7 @@ async def get_birthday_per_week(days: int, db: Session) -> Contact:
     response = []
     all_contacts = db.query(Contact).all()
     for contact in all_contacts:
-        if timedelta(0) <= ((contact.birthaday.replace(year=int((datetime.now()).year))) - datetime.now().date()) <= timedelta(days):
+        if timedelta(0) <= ((contact.birthday.replace(year=int((datetime.now()).year))) - datetime.now().date()) <= timedelta(days):
             response.append(contact)
 
     return response
