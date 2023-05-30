@@ -1,0 +1,35 @@
+{% extends "app_portal/base.html" %}
+
+{% block content %}
+<h1>Add quote</h1>
+<form method="POST" action="{% url 'app_portal:quote' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label> Select author for quote:
+            <select name="author">
+                {% for author in authors %}
+                <option value="{{author.id}}">{{ author.full_name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+    </div>
+    <div class="mb-3">
+        <label> Select tags for quote:
+            <select name="tags" multiple="multiple" required>
+                {% for tag in tags %}
+                <option value="{{tag.name}}">{{tag.name}}</option>
+                {% endfor %}
+            </select>
+        </label>
+    </div>
+    <div class="mb-3">
+        <label>Quote:
+            {{ form.quote }}
+        </label>
+        <span>{{ form.errors.quote }}</span>
+    </div>
+    <button type="submit">Submit</button>
+    <button type="reset" class="secondary">Reset</button>
+</form>
+
+{% endblock %}

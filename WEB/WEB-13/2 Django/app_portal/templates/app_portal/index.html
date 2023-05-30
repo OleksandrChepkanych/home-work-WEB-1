@@ -1,0 +1,24 @@
+{% extends "app_portal/base.html" %}
+{% load extract_tags %}
+{% block content %}
+
+<h1>Portal</h1>
+{% for quote in quotes %}
+<div>
+    {% if quote %}
+    <div class="px-4 py-5 my-5">
+    <div class="col-lg-6">
+        <p class="lead mb-4">{{ quote.quote }}</p>
+    </div>
+        <h5 class="display-8 fw-bold text-body-emphasis">
+            by <small class="author">{{ quote.quotes_author }}</small><a href="author_details/{{ quote.author_id }}"> (about)</a>
+        </h5>
+        <p>Tags: <small>{{ quote.tags|tags }}</small></p>
+</div>
+    {% else %}
+        No none information(
+    {% endif %}
+</div>
+{% endfor %}
+
+{% endblock %}

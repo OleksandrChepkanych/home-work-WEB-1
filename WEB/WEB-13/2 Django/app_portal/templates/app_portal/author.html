@@ -1,0 +1,36 @@
+{% extends "app_portal/base.html" %}
+
+{% block content %}
+<h1>Add author information</h1>
+<form method="POST" action="{% url 'app_portal:author' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label>Name:
+            {{form.full_name}}
+        </label>
+        <span>{{ form.errors.full_name }}</span>
+    </div>
+    <div class="mb-3">
+        <label>Born date:
+            {{form.born_date}}
+        </label>
+        <span>{{ form.errors.born_date }}</span>
+    </div>
+    <div class="mb-3">
+        <label>Born location:
+            {{form.born_location}}
+        </label>
+        <span>{{ form.errors.born_location }}</span>
+    </div>
+    <div class="mb-3">
+        <label>Biography:
+            {{form.bio}}
+        </label>
+        <span>{{ form.errors.bio }}</span>
+
+        <button type="submit">Submit</button>
+        <button type="reset" class="secondary">Reset</button>
+    </div>
+
+</form>
+{% endblock %}

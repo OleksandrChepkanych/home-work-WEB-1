@@ -1,0 +1,17 @@
+{% extends "app_portal/base.html" %}
+
+{% block content %}
+<h1>Add tags</h1>
+<form method="POST" action="{% url 'app_portal:tag' %}">
+    {% csrf_token %}
+    <div  class="mb-3">
+        <label>Tag name:
+            {{form.name}}
+        </label>
+        <span>{{ form.errors.name }}</span>
+    </div>
+        <button type="submit">Submit</button>
+        <button type="reset" class="secondary">Reset</button>
+</form>
+
+{% endblock %}
