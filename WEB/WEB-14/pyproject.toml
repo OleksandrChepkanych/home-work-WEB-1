@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "web-14"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "web_14"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+environ = "^1.0"
+pydantic = "^1.10.8"
+psycopg2 = "^2.9.6"
+fastapi-mail = "^1.2.8"
+fastapi = "^0.95.2"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+sqlalchemy = "^2.0.15"
+redis = "^4.5.5"
+passlib = "^1.7.4"
+cloudinary = "^1.33.0"
+fastapi-limiter = "^0.1.5"
+libgravatar = "^1.0.4"
+
+
+[tool.poetry.group.dev.dependencies]
+sphinx = "^7.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
